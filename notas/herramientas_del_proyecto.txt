@@ -34,5 +34,9 @@ las herramientas usadas para este proyecto son
 				"workbench.iconTheme": "material-icon-theme",
 				"workbench.colorTheme": "Monokai",
 			4-) compilador de PHP "php.validate.executablePath": "C:\\laragon\\bin\\php\\php-7.2.19-Win32-VC15-x64\\php.exe",	
+		d-) GIT
+			buscamos en nuestro repositorio de github el http del repositorio y obtenemos la url https://github.com/gustavodomina/biblioteca-laravel.git
+			usamos la barra izquierda tercer icono de arriba hacia abajo y lo presionamos
+			
 			
 		
