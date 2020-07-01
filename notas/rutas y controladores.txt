@@ -1,0 +1,97 @@
+la documentacion oficial se encuentra en https://laravel.com/docs/7.x/routing
+
+Las rutas son las url de nuestro sitio y laravel se llaman routes
+
+dentro de laravel la carpeta se llama route y en ella hay diferentes archivos
+
+api.php es para api rest
+
+web.php maneja las rutas del proyecto
+
+por defecto la url del projecto apunta resources/views/wellcome.php
+
+
+Controladores
+
+Los controladores se almacenan en la carpeta App --> Http --> Controllers, la nomarma para crearlos es Tabla seguido de la palabra Controller
+
+El comando para crearlos es 
+
+php artisan make:controller PermisoController (crea el controlador vacio)
+php artisan make:controller InicioController -r (crea el controlador con todos sus metodos porque es un recurso).
+php artisan make:controller admin/PermisoController -r (admin/ le indica en que subcarpeta debe crear el controller).
+
+con el comando php artisan optimize forzamos a laravel a cachear todas las route nuevamente.
+el sistema de cacheo no rutea rutas con funciones por lo tanto si hacemos un php artisan optimize va a dar error
+
+si en el archivo route se encuntra la siguiente liena es
+
+antes de laravel 5.7 
+
+Route::get('permiso', 'PermisoController@index');
+
+1-) permiso =la url http://biblioteca.test/permiso
+2-) llama al controller PermisoController ejecutando el metodo index;
+
+Forma nueva a partir de laravel 5.7
+Route::view('permiso', 'permisoView');  
+1-) permiso =la url http://biblioteca.test/permiso
+2-) ejecuta la vista permisoView en la carpeta view
+
+Ruteos con Parametros
+ los parametros se pasan el la url separados con / 
+ 
+ http://biblioteca.test/permiso/general/1
+ 
+ 1-) primer parametro es general
+ 2-) segundo parametro es 1
+ 
+ definicion el Route
+ 
+ Route::get('permiso/{nombre}/{slug?}', 'PermisoController@index');
+ el signo de pregunta indica que el parametro es opcional
+ 
+definicion en el controlador
+
+public function index($nombre, $slug = false(indica que es opcional))
+    {
+        return view('permisoView', compact('nombre','slug'));
+    }
+	
+definicion en la vista (permisoView.blade.php)
+
+Sistema de Permiso {{ $nombre.' '}} {{ $slug }}
+
+
+Ruteo con nombre 
+
+en la vista
+<a href="{{ route('permiso') }}"> ir a permiso </a>
+
+en el wep.php
+
+Route::get('admin/sistema/permiso', 'PermisoController@index')->name('permiso');
+
+la ventaja de usar esto es que si tenemos que hacer algun cambio solo cambiamos en la ruta o su parametro, solo
+cambiamos el archivo web.php y todoas las llamadas siguen igual.
+
+Ruteos con Expresiones(https://laravel.com/docs/7.x/routing#parameters-regular-expression-constraints)
+
+Route::get('permiso/{nombre}', function ($nombre) {
+    return $nombre;
+})->where('nombre', '[A-Za-z]+');
+
+la condicion where es el validador del la expresion en este caso solo acepta letras si el parametro nombre es un numero da error.
+
+/* con cacheo 
+Route::get('admin/permiso', 'Admin\PermisoController@index')->name('permiso');*/
+
+/* sin cacheo*/ 
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
+    // Controllers Within The "App\Http\Controllers\Admin" Namespace
+    Route::get('permiso', 'PermisoController@index')->name('permiso');
+    Route::get('permiso/crear', 'PermisoController@crear')->name('crear_permiso');
+});
+conviene cuando estamos en un proyecto muy grande y usuamos subcarpetas para ordenar 
+
+	

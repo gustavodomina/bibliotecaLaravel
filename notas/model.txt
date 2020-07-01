@@ -1,0 +1,5 @@
+Modelos
+
+para crear un modelo en una carpeta definida es
+
+php artisan make:model Models/admin/Permiso

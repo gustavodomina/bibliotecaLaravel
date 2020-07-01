@@ -1,0 +1,59 @@
+Los Model Factory siver para ingresar datos aleatorios a las tablas y poder probar nuestro codigo,
+tabajan en conjunto con los seeds.
+
+Para crear un Seeder debemos usar en una consola la documentacion esta en 
+https://laravel.com/docs/7.x/seeding
+	-> php artisan make:seeder nombre del seeder en UpperCamelCase
+	
+Estructura de un seed
+
+Correr los seeds genrarados
+	-> php artisan db:seed 
+	
+Factory(para crear datos en las tablas)
+
+-> se crean con el comando php artisan make:factory NobreTablaFactory
+
+Model
+para una mejor organizacion crear dentro de la carpeta App una llamada Models y mover los modelos generado ahí.
+
+para crear los models ejecutamos php artisan make:model Models/Permiso
+(anteponemos Models/ al nombre del modelo para que lo genere en la carpeta que creamos para almacenar los model).
+
+Alerta!!!! 
+	como este video no sigue las reglas de laravel en mombrar las tablas en plurar sino en singular al crear el Model
+	debemos agregar la siguiente linea para que laravel no se confunda
+	
+	class Permiso extends Model
+	{
+		protected $table="permiso"; (esta linea declarando el nombre de la tabla).
+	}
+1-) luego de crear el Model devemos ir al seeds TablaPermisoSeeder agregar la suguiente linea despues de (use Illuminate\Database\Seeder;)
+
+Use App\Models\Permiso;
+
+2-) En el archivo PermisoFactory.php cambiar el Model (Model::class) por el nombre del Model creado dentro de la carpeta Models
+use App\Model;
+use App\Models\Permiso; (controlar que se haya importado esta linea automaticamente, si no agregarla a mano.)
+use Faker\Generator as Faker;
+
+$factory->define(Permiso::class, function (Faker $faker) {
+    return [
+        'nombre' => $faker->word,
+        'slug' => $faker->word
+    ];
+});
+
+la documentacion de faker se puede consultar en https://github.com/fzaninotto/Faker
+
+Para cerrar el circulo debemos ir al seeds TablaPermisoSeeder e invocar la model Factory 
+agregando dentro de la funcion run
+
+factory(Permiso::class)->create(); --> crea un solo registro
+factory(Permiso::class,50)->create(); --> crea 50 registros
+factory(Permiso::class)->times(10)->create(); -->crea 10 registros
+
+3-) para ejecutar esto desde la terminar escribimos
+php artisan db:seed 
+
+

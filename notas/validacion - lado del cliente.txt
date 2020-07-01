@@ -1,0 +1,19 @@
+para la validacion del lado del cliente vamos a usar https://jqueryvalidation.org/
+
+1-) descargamos
+2-) descomprimimos y el contenido de la carpeta dist en public\assets\js y renombramos la carpeta a jquery-validation
+3-) integramos nuestro jquery al layout.blade.php que se encuentra en la carpeta resource --> view --> theme --> lte
+	<!-- jqueryvalidation -->
+	<script src="{{asset("assets/jquery-validation/jquery.validate.js")}}"></script> (validacion)
+    <script src="{{asset("assets/jquery-validation/localization/messages_es_AR.js")}}"></script>(paquete de idioma)
+	<script src="{{asset("assets/js/funciones.js")}}"></script>	 para validar todos los formularios
+4-) en la carpeta resource --> view --> menu al formulario form.blade.php
+	agregamos required a cada dato a ser validado.
+5-) en public\assets\js creamos una carpeta pages --> scripts --> admin 
+	dentro de ella creamos un archivo crear.js y lo llamamos desde crear.blade.php que esta en la carpeta resource --> view --> admin --> menu
+	@section("scripts")
+	<script src="{{asset("assets/pages/scripts/admin/menu/crear.js")}}" type="text/javascript"></script>
+	@endsection
+	para pasarselo al layout.blade.php
+6-) al formulario crear.blade.php en el tag <form agregamos un id id="form-general" ></form>
+	

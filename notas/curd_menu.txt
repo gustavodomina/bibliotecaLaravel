@@ -1,0 +1,64 @@
+Pasos para crear un crud completo
+
+1-) creamos el controlador de Menú
+	-> php artisan make:controller Admin/MenuController -r(crear como recurso eso es index, create, update, delete, show, edit).
+2-) creamos el modelo
+	a-) php artisan make:model Models/Admin/Menu
+	b-) class Menu extends Model
+		{
+			protected $table="menu";
+			protected $fillable = ['nombre','url','icono'];(campos de la tabla que se pueden editar masivamente)
+			protected $guarded = ['id']; (campo que no se pueden modificar)
+			
+		}
+	c-) creamos el modelo de menu_rol
+	d-) php artisan make:model Models/Admin/MenuRol
+		class MenuRol extends Model
+		{
+			protected $table = "menu_rol";
+			public $timestamps = false; (indicamos a eloquent que no usamos campos tipo tiemestamp).
+			
+		}
+3-) cramos las vistas
+	en carpeta resources --> views --> admin creamos una subcarpeta llamada menu y dentro de ella creamos unos archivo 
+	a-) index.blade.php
+	b-) crear.blade.php
+	c-) editar.blade.php
+	d-) form.blade.php
+	
+4-) en la carpeta resources --> routes editamos el archivo web.php agregando las siguientes lineas a nuestra agrupacion de admin
+	Route::get('menu', 'MenuController@index')->name('menu');
+    Route::get('menu/crear', 'MenuController@crear')->name('crear_menu');
+
+5-) en el controldador MenuCotroller edito la funcion crear llamado a la vista
+	public function crear()
+    {
+        return view('admin.menu.crear');
+    }
+6-) dentro de la carpeta resources --> views --> admin --> menu maqueto los  formulario html
+7-) dentro de la carpeta public solo dejo la carpeta assets que creea al maquetar boostrap y luego creo una llamada css y otra llamada js dentro de 
+	assest--> css creo un archivo llamado custom.css para css propios 
+	
+8-)	lugo de maquetar el formulario en el archivo web.php creo la ruta para el grabado de los menu
+	Route::post('menu', 'MenuController@guardar')->name('guardar_menu');
+9-) dentro de la carpeta resources --> views --> admin --> menu --> crear.blade.php modifico la linea 
+	<form action="{{route('guardar_menu')}}" id="form-general" class="form-horizontal" method="POST"> agregando el nombre de la ruta creada en web.php para 
+	guardar los menu nuevos que hacen referencia a la funcion guardar del MenuController
+10-)En el controller MenuController agrego el modelo para poder realizar las distintas acciones con la BD.
+	use App\Models\Admin\Menu;
+	
+	public function guardar(Request $request)
+    {
+        Menu::create($request->all());
+    }
+	de esta forma se asigna de forma masiva los datos enviados al controlador para ser insertados en la base, este ejemplo no tiene validadores ni ningun
+	cotrol de seguridad.
+11-)luego creamos el archivo de validadcion php artisan make:request ValidacionMenu
+12-)creamos las reglas 
+13-)las mostramos en el formulario (para ver esto consulta validacion.txt de la carpeta notas)
+14-)una vez creado el menu en la bd con exito redirigimos con un mensaje de la siguiente manera.
+	public function guardar(ValidacionMenu $request)
+    {
+        Menu::create($request->all());
+        return redirect('admin/menu/crear')->with('mensaje','Menú Creado con Exito');
+    }

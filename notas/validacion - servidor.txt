@@ -1,0 +1,108 @@
+Form Request Validation la documentacion esta en https://laravel.com/docs/7.x/requests
+
+Vamos a utilizar Form Request Validation para ello desde la consola  tipeamos
+
+	php artisan make:request ValidacionMenu este se creara dentro de Http --> Request
+	
+	se genera un archivo con la siguiente estructura
+	
+	<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ValidacionMenu extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return false; --> esto hay que ponerlo en true
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            // --> aqui escribimos las reglas de validacion.
+        ];
+    }
+}
+
+una vez editado el archivo de validacion en el cotrolador 
+
+debemos asegurarnos de llamar al archivo de validacion agregando al principio 
+	use App\Http\Requests\ValidacionMenu;;
+	y luego en la funcion guardar reemplazamos el encabezado public function guardar(Request $request) por 
+	public function guardar(ValidacionMenu $request)
+	
+Para mostrar los errordes debemos hacer lo siguiente
+
+en el formulario html utilizamos dentro de los inputs value="{{old('nombre')}}"	 esto repoblara el campo con el valor anterior al error.
+
+traducir los errores de laravel vamos a https://github.com/Laraveles/spanish lo descargamos, descomprimimos y la carpeta es
+la copiamos en Resources --> lang
+
+para pasar nuestra aplicacion al español vamos a nuestro proyecto carpeta config --> app y buscamos la linea
+
+ 'locale' => 'en',  y la reemplazamos por  'locale' => 'es',
+
+ una vez realizado esto podemos borrar los mensajes escritos en el arcivo  ValidacionMenu porque laravel va a mostrar los mensajes del frameWork.
+ 
+ 
+ Como mostramos los errores 
+ 
+ en la carpeta resources --> view --> includes creamos un archivo llamado form-error.blade.php y colocamos el siguietne codigo.
+ 
+ @if ($errors->any())
+  <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h4><i class="icon fa fa-ban"></i> El Formulario Contiene Errores!</h4>
+    <ul>
+      @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif 
+
+este se mostrara si alguna de nustras reglas de validacion falla.
+
+y lo llamamos de la vista @include('includes.form-error') donde querramos mostrar los errores.
+
+Crear Reglas de Validacion personalizadas
+
+		return [
+            'nombre' => 'required|min:3|max:50|unique:menu,nombre,'. $this->route('id'),
+            'url' => 'required|min:3|max:100',
+            'icono' => 'nullable|max:50'
+        ];
+en este ejemplo indicamos que el campo nombre es unico en la tabla menu el . $this->route('id') es para edicion.
+
+
+
+para crear una nueva regla debemos hacer los siguiente en la consola de comando 
+php artisan make:rule ValidarCampoUrl
+y dentro de la carpeta app --> Rules nos creara el archivo.
+Muy importante llamar al modelo de base de datos que estamos controlando al inicio del archivo ValidarCampoUrl
+
+Como se llama a la regla de valicion generada desde el Archivo ValidationMenu
+
+	 public function rules()
+    {
+        return [
+            'nombre' => 'required|min:3|max:50|unique:menu,nombre,'. $this->route('id'),
+            'url' => ['required','max:100', new ValidarCampoUrl],
+            'icono' => 'nullable|max:50'
+        ];
+    }
+
+

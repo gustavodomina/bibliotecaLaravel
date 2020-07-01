@@ -1,0 +1,63 @@
+para este modulo usamos adminLTE version 2.4.10 lo descargamos de https://adminlte.io/
+
+para implementar el template dentro de la carpeta Public vamos a crear una carpeta llamada assets y dentro de esta una llamada lte
+copiamos las carpeta 
+		bower_components 
+		plugins
+		dist
+		
+dentro de la creada anteriormente.
+
+
+Para trabajar con vistas la documentacion oficial esta en https://laravel.com/docs/7.x/views
+el motor de plantillas es Blade y la documentacion es https://laravel.com/docs/7.x/blade
+
+Para implementar el layout debemos crear en la carpeta views una llamada theme y dentro de ella una llamada lte
+dentro de esta creamos un archivo vacio llamado layout.balde.php
+
+1-) tomamos de C:\laragon\www\Adminlte\pages\layout el archivo boxed.html
+copiamos el codigo completo hasta </head>
+
+<link rel="stylesheet" href="{{asset("assets/$theme/bower_components/Ionicons/css/ionicons.min.css")}}">
+
+analizando esta linea podemos definir que 
+
+1-) se llama al helper asset()
+
+2-) dentro del parentecis le indicamos la ubucacion de nuestro template por defecto asume la carpeta public
+	assets/$theme/
+3-) $theme es una variable que nos permnitira personalizar nuestro nombre de template para reemplazarlo o actualizarlo facilmente
+
+4-) para crar la variable $theme vamos a App --> Providers --> AppServiceProvider.php dentro de la funcion register agregamos
+
+	View::share('theme', 'lte'); lo cual indica que nustro variable $theme se llenara con lte que fisicamente es igual a 
+	
+	public --> assets --> lte
+	
+	controlar que se importe la libreria use Illuminate\Support\Facades\View;
+
+de esta forma podemos cambiar todo el template con solo modificar la variable $theme
+
+5-) creamos el header.blade.php y reemplazamos los path como en el layput
+
+6-) en el archivo web.php dentro de la carpeta routes creamos la ruta al controlador principal 
+
+	Route::get('/', 'InicioController@index');
+	
+7-) creamos el cotnrolador para llamar a 
+	
+	public function index()
+    {
+        return view('inicio');
+    }
+
+	inicio.blade.php se encutrna en la raiz de view y por lo tanto contiene la llamada a layout
+	
+	contenido de inicio.blade.php @include("theme.$theme.layout");
+	
+Implementando Blade
+si trabajas con visual studio usando b: te ofrece toas las variables de blade y al seleccionarlas las reemplaza por el codigo correcto
+
+@yield('titulo', 'Biblioteca') con esta directiva podemos enviar datos del controlador a la vista 
+1-) titulo -> variable para enviar desde el controlador
+2-) Biblioteca -> si titulos es nula o vacia se muestra Biblioteca para evitar un error

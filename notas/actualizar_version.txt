@@ -1,0 +1,8 @@
+Saber la Version de Laravel y actualizar
+	abrir consola en visual studio code con (ctrl + ñ)  
+		-> php artisan --version
+		-> composer update(para actualizar todas las dependencias necesarias).
+	como cambiar la version de laravel
+		-> editamos el archivo composer.json buscamos la linea "laravel/framework": "^7.0", y cambiamos
+		a la version necesaria 
+		-> guardamos el archivo y ejecutamos composer update.

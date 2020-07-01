@@ -1,0 +1,25 @@
+las herramientas usadas para este proyecto son
+
+1-) Laragon https://laragon.org/
+	es un servidor igual a xampp lo instalamos dandole suguiente hasta el final. 
+	este servidor viene con composer y node.js ya integrados.
+	(un problema que detecte para instalar su complementos es que no funciona correctamente 
+	cuando el entorno de programacion  esta detras de un proxy).
+	a-) para integrarlo a nivel de sistema debemos hacer
+		boton derecho en laragon --> herramientas --> PATH Variables de Entorno --> add laragon to path
+	b-) GIT para instalarlo nos vamos a boton derecho pantalla de laragon --> Herramientas  --> Quick Add 
+		agregamos git si la instalacion da problemas vamos a http://forum.laragon.org/topic/1320/sort-out-the-download-issue-with-curl-in-quick-app-and-quick-add
+		buscamos esta linea https://github.com/leokhoa/laragon/blob/master/laragon.exe
+		descargamos en formato zip y reemplazamos laragon.exe del disco con el nuevo del zip
+2-) instalamos Visual Studio Code de microsof
+	una vez instalado utilizamos F1 para abrir cuadro de busqueda y tipeamos user setting
+	configuracion 
+		a-) git: buscamos git.path y agregamos el path de git en laragon 
+			"git.path": "C:\\laragon\\bin\\git\\bin\\git.ext" o donde se encuentre.
+			"git.enableSmartCommit":true
+		b-) cmd: terminal integrada de windows la cambiamos por la de laragon "terminal.integrated.shell.windows": "C:\\laragon\\bin\\cmder\\cmder.bat",
+		c-) php: agregamos donde se encuentra el compilador de php 
+			"php.validate.executablePath": "C:\\laragon\\bin\\php\\php-7.2.19-Win32-VC15-x64\\php.exe"
+			"blade.format.enable": true,(habilita el autocompletado de blade)
+		d-) fuentes: descargamos la fontfamily Fira la instalamos y configuramos "editor.fontFamily": "Fira Code,Consolas, 'Courier New' monospace",(opcional)
+		

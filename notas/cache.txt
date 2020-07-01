@@ -1,0 +1,18 @@
+Cache en Laravel
+
+Configuracion 
+en el archivo .env modificamos la linea
+
+CACHE_DRIVER=file A redis
+
+REDIS
+	la pagina oficia es redis.io
+	pagina de descarga https://github.com/rgl/redis/downloads
+	para instalarlo debemos ejecutar el exe una vez finalizado en laragon detener todos los servicio ir a configuracion y habilitar redis
+	luego desde la terminar de lartagon chequeamos 
+	redis-cli Rpta 127.0.0.1:6379 >
+	redis-server
+	[472] 20 Jun 20:44:20.562 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+	[472] 20 Jun 20:44:20.568 # Creating Server TCP listening socket *:6379: bind: No such file or directory
+	En laravel ejecutamos el comando 
+	php artisan config:clear (para limpiar todas las configuraciones).
