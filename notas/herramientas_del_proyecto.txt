@@ -37,6 +37,12 @@ las herramientas usadas para este proyecto son
 		d-) GIT
 			buscamos en nuestro repositorio de github el http del repositorio y obtenemos la url https://github.com/gustavodomina/biblioteca-laravel.git
 			usamos la barra izquierda tercer icono de arriba hacia abajo y lo presionamos
-			
-			
+			si da problemas dentro del proyecto existe una carpeta llamada .git y ahí editamos el archivo config.
+			cerramos Visual Studio Code y abrimos nuevamente
+			agregamos desde la consola 
+			C:\laragon\www\biblioteca (master)
+			λ git config --local user.mail "gustavo.domina@gmail.com"
+			C:\laragon\www\biblioteca (master) 
+			λ git config --local user.name "gustavodomina"
+		
 		
